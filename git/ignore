@@ -1,0 +1,4 @@
+# Global gitignore
+
+# Claude Code
+.claude/
