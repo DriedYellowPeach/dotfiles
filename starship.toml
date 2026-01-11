@@ -12,7 +12,6 @@ $directory\
 $git_branch\
 $cmd_duration\
 (\
-$bun\
 $c\
 $cmake\
 $dart\
