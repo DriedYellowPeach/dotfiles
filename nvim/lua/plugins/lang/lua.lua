@@ -17,6 +17,13 @@ return {
                 semicolon = "Disable",
                 arrayIndex = "Enable",
               },
+              workspace = {
+                library = {
+                  -- vim.fn.expand("$VIMRUNTIME/lua"),
+                  -- vim.fn.stdpath("data") .. "/lazy",
+                },
+                checkThirdParty = false,
+              },
             },
           },
         },
