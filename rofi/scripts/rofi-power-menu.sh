@@ -13,7 +13,7 @@ set -e
 set -u
 
 # All supported choices
-all=(shutdown reboot suspend hibernate logout lockscreen)
+all=(suspend lockscreen hibernate reboot shutdown logout)
 
 # By default, show all (i.e., just copy the array)
 show=("${all[@]}")
@@ -28,14 +28,14 @@ texts[reboot]="reboot"
 texts[shutdown]="shut down"
 
 declare -A icons
-icons[lockscreen]="\Uf033e"
-icons[switchuser]="\Uf0019"
-icons[logout]="\Uf0343"
-icons[suspend]="\Uf04b2"
-icons[hibernate]="\Uf02ca"
-icons[reboot]="\Uf0709"
-icons[shutdown]="\Uf0425"
-icons[cancel]="\Uf0156"
+icons[lockscreen]=""
+icons[switchuser]="󰀙"
+icons[logout]="󰍃"
+icons[suspend]="󰤄"
+icons[hibernate]=" "
+icons[reboot]=""
+icons[shutdown]="󰚦"
+icons[cancel]=""
 
 declare -A actions
 actions[lockscreen]="hyprlock >/dev/null 2>&1"
