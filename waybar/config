@@ -127,7 +127,7 @@
 
     "custom/power": {
         "format": " ⏻ ",
-        "on-click": "wlogout",
+        "on-click": "pkill rofi || rofi -show powermenu -modi 'powermenu:~/.config/rofi/scripts/rofi-power-menu.sh --no-text' -theme ~/.config/rofi/power_theme.rasi",
         "tooltip": true,
         "tooltip-format": "Power Menu"
     }

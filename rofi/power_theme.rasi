@@ -1,0 +1,63 @@
+/* Power menu theme */
+@import "shared"
+
+configuration {
+    show-icons: false;
+}
+
+/* OUTER CONTAINER - change width here */
+window {
+    width: 700px;
+    location: center;
+    transparency: "real";
+    border: 2px solid;
+    border-color: @border-col;
+    border-radius: 12px;
+    background-color: @bg-glass;
+}
+
+/* CONTAINER PADDING - change padding here */
+mainbox {
+    children: [listview];
+    padding: 20px;
+    background-color: transparent;
+}
+
+listview {
+    columns: 6;
+    lines: 1;
+    fixed-columns: true;
+    fixed-height: true;
+    spacing: 32px;
+    background-color: transparent;
+    scrollbar: false;
+}
+
+/* BUTTON SIZE - change padding here for bigger/smaller buttons */
+element {
+    padding: 12px;
+    border-radius: 8px;
+    background-color: @bg-glass-light;
+    text-color: @fg-col;
+    border: 2px solid;
+    border-color: @border-col;
+}
+
+element selected {
+    background-color: @selected-col;
+    text-color: @fg-col;
+    border-color: @selected-border;
+}
+
+/* ICON FONT SIZE - change size here */
+element-text {
+    font: "Monaspace Krypton NF 32";
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    background-color: transparent;
+    text-color: inherit;
+}
+
+inputbar, message, mode-switcher, scrollbar {
+    enabled: false;
+}

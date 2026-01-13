@@ -1,0 +1,34 @@
+/* Shared configuration for all rofi menus */
+
+configuration {
+    /* Click outside to close */
+    me-select-entry: "";
+    me-accept-entry: "!MousePrimary";
+    kb-cancel: "Escape,MousePrimary";
+    hover-select: true;
+}
+
+/* Shared colors - Glass Effect (matching waybar) */
+* {
+    /* Dark glass - relies on Hyprland blur */
+    bg-glass: rgba(0, 0, 0, 0.3);
+    bg-glass-light: rgba(0, 0, 0, 0.2);
+    bg-glass-hover: rgba(0, 0, 0, 0.15);
+
+    /* Borders - thick shiny glass */
+    border-col: rgba(255, 255, 255, 0.35);
+    border-col-hover: rgba(255, 255, 255, 0.6);
+
+    /* Selected */
+    selected-col: rgba(255, 255, 255, 0.08);
+    selected-border: rgba(255, 255, 255, 0.7);
+
+    /* Text colors */
+    fg-col: #cdd6f4;
+    fg-col2: #ffffff;
+    fg-dim: #a6adc8;
+    grey: #6c7086;
+
+    font: "Monaspace Krypton NF 12";
+    background-color: transparent;
+}

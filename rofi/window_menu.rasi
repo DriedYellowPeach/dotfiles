@@ -1,0 +1,12 @@
+@import "shared"
+
+configuration {
+    modi: "window";
+    show-icons: true;
+    icon-theme: "Papirus";
+    window-thumbnail: true;
+    display-window: "Windows";
+    window-format: "{w} {c} {t}";
+}
+
+@theme "window_theme"
