@@ -290,6 +290,8 @@ Window and layer rules are configured in `~/.config/hypr/conf/menus.conf`:
 ## 5. Some other tools
 
 - setup the wallpaper, switching effect here
+- reset the ctrl + v keymap for alacritty, and fix clipboard
+- graceful shutdown, make browser be able to save their state [some graceful shutdown config](https://github.com/vyrx-dev/dotfiles/blob/main/.config/hypr/scripts/graceful-shutdown)
 - hyprlock can have user icon, do it
 - set
 

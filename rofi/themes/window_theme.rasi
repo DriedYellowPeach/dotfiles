@@ -1,5 +1,5 @@
 /* Window switcher theme */
-@import "shared"
+@import "../shared"
 
 element-text, element-icon {
     background-color: transparent;

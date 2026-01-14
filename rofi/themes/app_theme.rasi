@@ -1,5 +1,5 @@
 /* App theme */
-@import "shared"
+@import "../shared"
 
 element-text, element-icon, mode-switcher {
     background-color: transparent;

@@ -1,5 +1,5 @@
 /* Power menu theme */
-@import "shared"
+@import "../shared"
 
 configuration {
     show-icons: false;

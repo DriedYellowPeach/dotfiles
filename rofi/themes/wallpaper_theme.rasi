@@ -1,0 +1,93 @@
+/* Wallpaper picker theme */
+@import "../shared"
+
+window {
+    width: 85%;
+    height: 85%;
+    location: center;
+    transparency: "real";
+    border: 2px solid;
+    border-color: @border-col;
+    border-radius: 12px;
+    background-color: @bg-glass;
+}
+
+mainbox {
+    padding: 20px;
+    spacing: 15px;
+    background-color: transparent;
+    children: [ "inputbar", "listview" ];
+}
+
+inputbar {
+    padding: 10px 16px;
+    margin: 0 30%;
+    border: 1px solid;
+    border-color: @border-col;
+    border-radius: 10px;
+    background-color: @bg-glass-light;
+    children: [ "entry" ];
+}
+
+entry {
+    placeholder: "Search wallpapers...";
+    placeholder-color: @grey;
+    background-color: transparent;
+    text-color: @fg-col;
+    horizontal-align: 0.5;
+    cursor: text;
+}
+
+listview {
+    columns: 4;
+    lines: 2;
+    spacing: 15px;
+    flow: horizontal;
+    fixed-height: true;
+    fixed-columns: true;
+    scrollbar: true;
+    background-color: transparent;
+}
+
+scrollbar {
+    handle-width: 6px;
+    handle-color: @border-col;
+    border-radius: 3px;
+    background-color: @bg-glass-light;
+}
+
+element {
+    orientation: vertical;
+    padding: 10px;
+    spacing: 8px;
+    border-radius: 10px;
+    background-color: @bg-glass-light;
+    border: 1px solid;
+    border-color: @border-col;
+    cursor: pointer;
+}
+
+element selected.normal {
+    background-color: @selected-col;
+    border-color: @selected-border;
+}
+
+element-icon {
+    size: 180px;
+    border-radius: 8px;
+    background-color: transparent;
+    cursor: inherit;
+}
+
+element-text {
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+    padding: 5px 0 0 0;
+    text-color: @fg-col;
+    background-color: transparent;
+    cursor: inherit;
+}
+
+element selected.normal element-text {
+    text-color: @fg-col2;
+}

@@ -1,0 +1,10 @@
+@import "shared"
+
+configuration {
+    show-icons: true;
+    display-dmenu: "";
+    disable-history: true;
+    hide-scrollbar: false;
+}
+
+@theme "themes/wallpaper_theme"

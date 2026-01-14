@@ -9,4 +9,4 @@ configuration {
     window-format: "{w} {c} {t}";
 }
 
-@theme "window_theme"
+@theme "themes/window_theme"

@@ -15,4 +15,4 @@ configuration {
     sidebar-mode: true;
 }
 
-@theme "app_theme"
+@theme "themes/app_theme"
