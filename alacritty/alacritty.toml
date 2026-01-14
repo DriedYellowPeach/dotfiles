@@ -1,1 +1,72 @@
-/home/neil/source/dot-files/alacritty-config/alacritty.toml
+[terminal.shell]
+program = "/bin/zsh"
+args = ["--login"]
+
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[font]
+size = 14.25
+
+[font.bold]
+family = "ComicCode Nerd Font"
+style = "Bold"
+
+[font.bold_italic]
+family = "ComicCode Nerd Font"
+style = "Bold Italic"
+
+[font.italic]
+family = "ComicCode Nerd Font"
+style = "Italic"
+
+[font.normal]
+family = "ComicCode Nerd Font"
+style = "Regular"
+
+[font.glyph_offset]
+x = 0
+y = 0
+
+[font.offset]
+x = 0
+y = -2
+
+[keyboard]
+bindings = [
+  { key = "N", mods = "Command", action = "SpawnNewInstance" },
+  { key = "Back", mods = "Control", chars = "\u0017" },
+  { key = "F", mods = "Control|Shift", chars = "\u001B[D" },
+  { key = "G", mods = "Control", chars = "\u001B[A" },
+  { key = "G", mods = "Control|Shift", chars = "\u001B[B" },
+  { key = "B", mods = "Option", chars = "\u001BB" },
+  { key = "F", mods = "Option", chars = "\u001BF" },
+  { key = "J", mods = "Option", chars = "▼" },
+  { key = "K", mods = "Option", chars = "▲" },
+  { key = "H", mods = "Option", chars = "◀" },
+  { key = "L", mods = "Option", chars = "▶" },
+]
+
+
+[[mouse.bindings]]
+action = "PasteSelection"
+mouse = "Middle"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+
+[window]
+decorations = "buttonless"
+dynamic_padding = true
+opacity = 1
+
+[window.padding]
+x = 1
+y = 1
+
+[general]
+import = ["~/.config/alacritty/themes/themes/tokyo_night_storm.toml"]
