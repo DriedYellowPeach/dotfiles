@@ -3,6 +3,11 @@
 # Wallpaper Picker Script
 # Uses awww to set wallpapers with rofi preview
 
+# Toggle: if rofi is running, kill it and exit
+if pkill rofi; then
+	exit 0
+fi
+
 set -e
 set -u
 
