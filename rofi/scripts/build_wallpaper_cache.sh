@@ -10,8 +10,8 @@ set -u
 WALLPAPER_DIR="${USER_WALLPAPER_DIR:-$HOME/Pictures/wallpapers}"
 CACHE_DIR="${USER_WALLPAPER_CACHE_DIR:-$HOME/.cache/wallpaper-thumbs}"
 
-THUMB_WIDTH=300
-THUMB_HEIGHT=200
+THUMB_WIDTH=320
+THUMB_HEIGHT=180
 
 # Check dependencies
 if ! command -v magick &>/dev/null && ! command -v convert &>/dev/null; then
@@ -39,20 +39,37 @@ if [[ ${#WALLPAPERS[@]} -eq 0 ]]; then
 fi
 
 echo "Found ${#WALLPAPERS[@]} wallpapers"
-echo "Generating thumbnails..."
+echo "Generating thumbnails (${THUMB_WIDTH}x${THUMB_HEIGHT})..."
+echo ""
 
 count=0
+failed=0
 for img in "${WALLPAPERS[@]}"; do
 	name=$(basename "$img")
-	thumb="$CACHE_DIR/${name%.*}.png"
+	thumb_name="${name%.*}.png"
+	thumb="$CACHE_DIR/$thumb_name"
+
+	# Get original image size
+	if command -v magick &>/dev/null; then
+		orig_size=$(magick identify -format "%wx%h" "$img" 2>/dev/null || echo "unknown")
+	else
+		orig_size=$(identify -format "%wx%h" "$img" 2>/dev/null || echo "unknown")
+	fi
 
 	if magick "$img" -thumbnail "${THUMB_WIDTH}x${THUMB_HEIGHT}^" -gravity center -extent "${THUMB_WIDTH}x${THUMB_HEIGHT}" "$thumb" 2>/dev/null ||
 		convert "$img" -thumbnail "${THUMB_WIDTH}x${THUMB_HEIGHT}^" -gravity center -extent "${THUMB_WIDTH}x${THUMB_HEIGHT}" "$thumb" 2>/dev/null; then
-		((count++))
+		((++count))
 		echo "  [$count/${#WALLPAPERS[@]}] $name"
+		echo "             source: $orig_size -> thumbnail: ${THUMB_WIDTH}x${THUMB_HEIGHT}"
+		echo "             output: $thumb_name"
 	else
+		((++failed))
 		echo "  [FAILED] $name"
 	fi
 done
 
-echo "Done. Generated $count thumbnails in $CACHE_DIR"
+echo ""
+echo "Done."
+echo "  Generated: $count thumbnails"
+echo "  Failed: $failed"
+echo "  Output: $CACHE_DIR"
