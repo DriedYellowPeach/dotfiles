@@ -127,7 +127,7 @@
 
     "custom/power": {
         "format": " ⏻ ",
-        "on-click": "pkill rofi || rofi -show powermenu -modi 'powermenu:~/.config/rofi/scripts/rofi-power-menu.sh --no-text' -theme ~/.config/rofi/power_theme.rasi",
+        "on-click": "$HOME/.config/rofi/interface/power_menu_ui.sh",
         "tooltip": true,
         "tooltip-format": "Power Menu"
     }
