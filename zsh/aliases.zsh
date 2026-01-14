@@ -17,3 +17,6 @@ alias cat='bat --paging=never'
 
 # Better cd command: zoxide
 alias cd='z'
+
+# Have my open back
+alias open='xdg-open'
