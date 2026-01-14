@@ -186,15 +186,15 @@ pacman -S rofi-wayland
 
 Rofi configuration is located in `~/.config/rofi/`:
 
-| File                              | Purpose                          |
-| --------------------------------- | -------------------------------- |
-| `shared.rasi`                     | Shared colors and base config    |
-| `app_menu.rasi`                   | App launcher configuration       |
-| `app_theme.rasi`                  | App launcher theme               |
-| `window_menu.rasi`                | Window switcher configuration    |
-| `window_theme.rasi`               | Window switcher theme            |
-| `power_theme.rasi`                | Power menu theme                 |
-| `scripts/rofi-power-menu.sh`      | Power menu script                |
+| File                         | Purpose                       |
+| ---------------------------- | ----------------------------- |
+| `shared.rasi`                | Shared colors and base config |
+| `app_menu.rasi`              | App launcher configuration    |
+| `app_theme.rasi`             | App launcher theme            |
+| `window_menu.rasi`           | Window switcher configuration |
+| `window_theme.rasi`          | Window switcher theme         |
+| `power_theme.rasi`           | Power menu theme              |
+| `scripts/rofi-power-menu.sh` | Power menu script             |
 
 **Shared styling (`shared.rasi`):**
 
@@ -255,13 +255,13 @@ rofi -show powermenu -modi "powermenu:~/.config/rofi/scripts/rofi-power-menu.sh 
 
 **Power menu script options:**
 
-| Option          | Description                                    |
-| --------------- | ---------------------------------------------- |
-| `--choices`     | Limit which actions to show (use `/` separator)|
-| `--confirm`     | Which actions require confirmation             |
-| `--no-symbols`  | Hide icons                                     |
-| `--no-text`     | Hide text labels                               |
-| `--dry-run`     | Print action instead of executing              |
+| Option         | Description                                     |
+| -------------- | ----------------------------------------------- |
+| `--choices`    | Limit which actions to show (use `/` separator) |
+| `--confirm`    | Which actions require confirmation              |
+| `--no-symbols` | Hide icons                                      |
+| `--no-text`    | Hide text labels                                |
+| `--dry-run`    | Print action instead of executing               |
 
 ### 4.6 Hyprland Integration
 
@@ -281,16 +281,19 @@ Window and layer rules are configured in `~/.config/hypr/conf/menus.conf`:
 
 **Keybindings summary:**
 
-| Keybinding      | Action         |
-| --------------- | -------------- |
-| `Super + Space` | App launcher   |
-| `Super + Tab`   | Window switcher|
-| `Super + P`     | Power menu     |
+| Keybinding      | Action          |
+| --------------- | --------------- |
+| `Super + Space` | App launcher    |
+| `Super + Tab`   | Window switcher |
+| `Super + P`     | Power menu      |
 
 ## 5. Some other tools
 
+- setup the wallpaper, switching effect here
+- hyprlock can have user icon, do it
+- set
+
 - to take screenshot
-- better app launcher?
 - waybar detailed info better
-- for the logo, check package update?
+- for the logo, show some neofetch like info?
 - know more about workspace
