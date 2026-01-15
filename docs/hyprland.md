@@ -23,7 +23,8 @@
   * [4.4 Window Switcher](#44-window-switcher)
   * [4.5 Power Menu](#45-power-menu)
   * [4.6 Hyprland Integration](#46-hyprland-integration)
-* [5. Some other tools](#5-some-other-tools)
+* [5. Customizing sddm](#5-customizing-sddm)
+* [6. Some other tools](#6-some-other-tools)
 
 <!-- mtoc-end -->
 
@@ -287,15 +288,77 @@ Window and layer rules are configured in `~/.config/hypr/conf/menus.conf`:
 | `Super + Tab`   | Window switcher |
 | `Super + P`     | Power menu      |
 
-## 5. Some other tools
+## 5. Customizing sddm
 
-- setup the wallpaper, switching effect here
-- reset the ctrl + v keymap for alacritty, and fix clipboard
-- graceful shutdown, make browser be able to save their state [some graceful shutdown config](https://github.com/vyrx-dev/dotfiles/blob/main/.config/hypr/scripts/graceful-shutdown)
+### 5.1 Dependencies
+
+```bash
+pacman -S qt6-svg qt6-virtualkeyboard qt6-multimedia
+yay -S sddm-theme-silent
+```
+
+Requirements:
+- SDDM >= 0.21
+- QT >= 6.5
+
+### 5.2 Configuration files
+
+Configuration is stored in `~/.config/sddm/`:
+
+| File              | Purpose                                    |
+| ----------------- | ------------------------------------------ |
+| `theme.conf`      | SilentSDDM theme customization             |
+| `sddm-theme.conf` | System config (copy to /etc/sddm.conf.d/)  |
+
+### 5.3 Installation
+
+1. Copy system config:
+
+```bash
+sudo cp ~/.config/sddm/sddm-theme.conf /etc/sddm.conf.d/theme.conf
+```
+
+2. Rename the theme directory and symlink theme.conf:
+
+```bash
+sudo mv /usr/share/sddm/themes/SilentSDDM /usr/share/sddm/themes/default
+sudo ln -sf /home/neil/.config/sddm/theme.conf /usr/share/sddm/themes/default/theme.conf
+```
+
+Using a symlink allows editing `~/.config/sddm/theme.conf` directly without re-copying.
+
+3. Set up user avatar (optional):
+
+```bash
+# Copy your avatar to the faces directory
+sudo cp /path/to/your/avatar.png /var/lib/AccountsService/icons/$USER
+# Or create a symlink
+sudo ln -sf /path/to/your/avatar.png /var/lib/AccountsService/icons/$USER
+```
+
+### 5.4 Customization
+
+The theme uses:
+- **Background**: Same wallpaper as hyprlock (`~/.config/hypr/.current_wallpaper`)
+- **Font**: JetBrainsMono Nerd Font (consistent with hyprlock)
+- **Style**: Minimal white-on-dark with glass effects
+
+Key configuration sections in `theme.conf`:
+- `[LockScreen]` - Initial lock screen with clock
+- `[LoginScreen]` - Login area with avatar and password input
+- `[LoginScreen.MenuArea]` - Session selector, power menu, keyboard toggle
+
+Reference: https://github.com/uiriansan/SilentSDDM/wiki/Customizing
+
+## 6. Some other tools
+
+- [x] setup the wallpaper, switching effect here
+- [x] reset the ctrl + v keymap for alacritty, and fix clipboard
+- [x] sddm customize
 - hyprlock can have user icon, do it
-- set
+- know more about workspace
+- The margin at the bottom of waybar is too much
 
 - to take screenshot
 - waybar detailed info better
 - for the logo, show some neofetch like info?
-- know more about workspace
