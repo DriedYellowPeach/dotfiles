@@ -7,6 +7,7 @@
     "margin-left": 6,
     "margin-right": 6,
     "margin-top": 2,
+    "margin-bottom": -12,
     "mode": "dock",
     "start_hidden": false,
 
@@ -56,7 +57,7 @@
 
     "clock": {
         "format": "{:%H:%M}",
-        "format-alt": "{:L%A  |  %H:%M  |  %e %B}",
+        "format-alt": "{:L%A | %H:%M | %e %B}",
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
 

@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 green='\033[0;32m'
 red='\033[0;31m'
-bred='\033[1;31m'
 cyan='\033[0;36m'
 grey='\033[2;37m'
 reset="\033[0m"
 
-SHPATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SHPATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )/.." &> /dev/null && pwd )
 
 install_dependencies () {
     if command -v pacman &>/dev/null; then
@@ -33,11 +32,6 @@ copy_files () {
     sudo cp -rf "$SHPATH"/. /usr/share/sddm/themes/silent/
 }
 
-copy_fonts () {
-    echo -e "${grey}Copying fonts to '/usr/share/fonts/'...${reset}"
-    sudo cp -r /usr/share/sddm/themes/silent/fonts/{redhat,redhat-vf} /usr/share/fonts/
-}
-
 apply_theme () {
     echo -e "${grey}Editing '/etc/sddm.conf'...${reset}"
     if [[ -f /etc/sddm.conf ]]; then
@@ -54,7 +48,6 @@ apply_theme () {
             echo -e "\n[General]\nInputMethod=qtvirtualkeyboard" | sudo tee -a /etc/sddm.conf
         fi
 
-        # "InputMethod" was supposed to automatically set "QT_IM_MODULE", but it doesn't, so we manually export it.
         if ! grep -Pzq 'GreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/,QT_IM_MODULE=qtvirtualkeyboard' /etc/sddm.conf; then
             echo -e "\n[General]\nGreeterEnvironment=QML2_IMPORT_PATH=/usr/share/sddm/themes/silent/components/,QT_IM_MODULE=qtvirtualkeyboard" | sudo tee -a /etc/sddm.conf
         fi
@@ -65,8 +58,7 @@ apply_theme () {
     fi
 }
 
-install_dependencies ;
+install_dependencies &&
 copy_files &&
-copy_fonts ;
 apply_theme &&
-echo -e "\n${green} Theme successfully installed!${reset}"
+echo -e "\n${green} Theme successfully installed!${reset}"
