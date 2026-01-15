@@ -7,12 +7,19 @@ grey='\033[2;37m'
 reset="\033[0m"
 
 # Test for debug param ( debug | -debug | -d | --debug )
+# Compensate for Hyprland monitor scale (1.33) so test matches real SDDM
+# Theme now uses scale=1.33, so we need to cancel out Hyprland's 1.33 scaling
+export QT_SCALE_FACTOR=0.75
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
+export QT_IM_MODULE=qtvirtualkeyboard
+export QML2_IMPORT_PATH=./components/
+
 if [[ "$1" =~ ^(debug|-debug|--debug|-d)$ ]]; then
-    QT_IM_MODULE=qtvirtualkeyboard QML2_IMPORT_PATH=./components/ sddm-greeter-qt6 --test-mode --theme .
+    sddm-greeter-qt6 --test-mode --theme .
 else
     config_file=$(awk -F '=' '/^ConfigFile=/ {print $2}' metadata.desktop)
     echo -e "${green}Testing Silent theme...${reset}\nLoading config: ${config_file}\nDon't worry about the infinite loading, SDDM won't let you log in while in 'test-mode'."
-    QT_IM_MODULE=qtvirtualkeyboard QML2_IMPORT_PATH=./components/ sddm-greeter-qt6 --test-mode --theme . > /dev/null 2>&1
+    sddm-greeter-qt6 --test-mode --theme . > /dev/null 2>&1
 fi
 
 if [ ! -d "/usr/share/sddm/themes/silent" ]; then
