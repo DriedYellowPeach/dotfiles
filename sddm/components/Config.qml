@@ -74,6 +74,7 @@ QtObject {
     property int loginAreaMargin: config.intValue("LoginScreen.LoginArea/margin") // @desc:Margin of the login area relative to its anchor point.<br/>If position is set to `center`, this option specifies the top margin, left/right margin otherwise.<br/><br/><strong>Set this option to `-1` to center the login area.</strong>
 
     // [LoginScreen.LoginArea.Avatar]
+    property string avatarCustomPath: config.stringValue("LoginScreen.LoginArea.Avatar/custom-path") // @desc:Custom path for user avatar. Use {username} as placeholder for the current username. Example: /usr/share/icons/{username}/{username}.face.icon
     property string avatarShape: config.stringValue("LoginScreen.LoginArea.Avatar/shape") || "circle" // @possible:'circle' || 'square' @desc:Shape of the avatar. <br/>See also: <a href="#avatarborderradius">border-radius<a>
     property int avatarBorderRadius: config.intValue("LoginScreen.LoginArea.Avatar/border-radius") // @desc:Border radius of the 'square' avatar. <br/>See also: <a href="#avatarshape">shape<a>
     property int avatarActiveSize: config.intValue("LoginScreen.LoginArea.Avatar/active-size") || 120 // @desc:Size of the selected user's avatar.

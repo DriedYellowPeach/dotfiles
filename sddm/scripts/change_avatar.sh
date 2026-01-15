@@ -27,19 +27,29 @@ if [[ ! -f "$IMAGE" ]]; then
     exit
 fi
 
-if [[ -f "/usr/share/sddm/faces/$USERNAME.face.icon" ]]; then
-    echo -e "${green}Creating backup for '/usr/share/sddm/faces/$USERNAME.face.icon'${reset}"
-    sudo cp -f "/usr/share/sddm/faces/$USERNAME.face.icon" "/usr/share/sddm/faces/$USERNAME.face.icon.bkp"
+AVATAR_DIR="/usr/share/icons/$USERNAME"
+AVATAR_PATH="$AVATAR_DIR/$USERNAME.face.icon"
+
+# Create directory if it doesn't exist
+if [[ ! -d "$AVATAR_DIR" ]]; then
+    echo -e "${green}Creating directory '$AVATAR_DIR'${reset}"
+    sudo mkdir -p "$AVATAR_DIR"
 fi
 
-sudo cp "$IMAGE" "/usr/share/sddm/faces/tmp_face"
+if [[ -f "$AVATAR_PATH" ]]; then
+    echo -e "${green}Creating backup for '$AVATAR_PATH'${reset}"
+    sudo cp -f "$AVATAR_PATH" "$AVATAR_PATH.bkp"
+fi
+
+sudo cp "$IMAGE" "$AVATAR_DIR/tmp_face"
 # Crop image to square:
-sudo mogrify -gravity center -crop 1:1 +repage "/usr/share/sddm/faces/tmp_face"
+sudo mogrify -gravity center -crop 1:1 +repage "$AVATAR_DIR/tmp_face"
 # Resize face to 256x256:
-sudo mogrify -resize 256x256 "/usr/share/sddm/faces/tmp_face"
+sudo mogrify -resize 256x256 "$AVATAR_DIR/tmp_face"
 # Convert to PNG (required for SDDM/Qt compatibility):
-sudo magick "/usr/share/sddm/faces/tmp_face" "/usr/share/sddm/faces/tmp_face.png"
-sudo rm -f "/usr/share/sddm/faces/tmp_face"
-sudo mv "/usr/share/sddm/faces/tmp_face.png" "/usr/share/sddm/faces/$USERNAME.face.icon"
+sudo magick "$AVATAR_DIR/tmp_face" "$AVATAR_DIR/tmp_face.png"
+sudo rm -f "$AVATAR_DIR/tmp_face"
+sudo mv "$AVATAR_DIR/tmp_face.png" "$AVATAR_PATH"
 
 echo -e "\n${green}Avatar updated for user '$USERNAME'!${reset}"
+echo -e "${cyan}Avatar saved to: $AVATAR_PATH${reset}"

@@ -20,6 +20,13 @@ Item {
         userList.incrementCurrentIndex();
     }
 
+    function getAvatarSource(username, defaultIcon) {
+        if (Config.avatarCustomPath) {
+            return Config.avatarCustomPath.replace(/{username}/g, username);
+        }
+        return defaultIcon;
+    }
+
     ListView {
         id: userList
         anchors.fill: parent
@@ -91,7 +98,7 @@ Item {
             Avatar {
                 width: parent.width
                 height: parent.height
-                source: model.icon
+                source: selector.getAvatarSource(model.name, model.icon)
                 active: index === userList.currentIndex
                 opacity: active ? 1.0 : Config.avatarInactiveOpacity
                 enabled: userModel.rowCount() > 1 // No need to open the selector if there's only one user
