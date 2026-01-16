@@ -100,16 +100,12 @@ box.horizontal {
   padding: 2px 8px;
   margin: 0 2px;
   transition: all 0.3s ease;
+  font-size: 18pt;
 }
 
 #workspaces button.empty {
   color: @overlay0;
   font-size: 23pt;
-}
-
-#workspaces button.default {
-  color: @overlay0;
-  font-size: 21pt;
 }
 
 #workspaces button:hover {
