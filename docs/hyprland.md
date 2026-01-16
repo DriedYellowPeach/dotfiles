@@ -138,6 +138,35 @@ Or use hyprctl:
 hyprctl dispatch exec "uwsm app -- waybar"
 ```
 
+**Workspace colors:**
+
+Workspaces are color-coded by monitor in `style.css`:
+
+| Workspaces | Monitor  | Color                    |
+| ---------- | -------- | ------------------------ |
+| 1-5        | HDMI-A-2 | Muted red-gray `#c07070` |
+| 6-10       | DP-3     | Muted blue `#5aafd5`     |
+| Active     | Any      | Yellow `#ffff00`         |
+
+CSS selectors used:
+
+```css
+/* Workspaces 1-5 */
+#workspaces button:nth-child(-n + 5) {
+  color: #c07070;
+}
+
+/* Workspaces 6-10 */
+#workspaces button:nth-child(n + 6) {
+  color: #5aafd5;
+}
+
+/* Active workspace */
+#workspaces button.active {
+  color: #ffff00;
+}
+```
+
 ## 3. Hyprlock Setup
 
 Hyprlock is the official lock screen for Hyprland.
@@ -364,8 +393,13 @@ Reference: https://github.com/uiriansan/SilentSDDM/wiki/Customizing
 - [x] sddm customize
 - [x] The margin at the bottom of waybar is too much
 - [x] hyprlock can have user icon, do it
-- know more about workspace
+- [x] know more about workspace
+- [x] File browser
 
+- window style: active window border, normal window border
+- how to hide all windows
 - to take screenshot
 - waybar detailed info better
 - for the logo, show some neofetch like info?
+- how to hide all windows
+- rofi emoji menu

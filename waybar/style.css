@@ -15,7 +15,7 @@
 window#waybar {
   background: transparent;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 window#waybar.hidden {
@@ -51,6 +51,7 @@ box.horizontal {
 #memory,
 #disk,
 #network,
+#pulseaudio,
 #tray,
 #custom-power {
   background: rgba(0, 0, 0, 0.3);
@@ -72,6 +73,7 @@ box.horizontal {
 #memory:hover,
 #disk:hover,
 #network:hover,
+#pulseaudio:hover,
 #tray:hover,
 #custom-power:hover {
   background: rgba(0, 0, 0, 0.15);
@@ -142,7 +144,7 @@ box.horizontal {
 #clock {
   color: @rosewater;
   font-family: "Monaspace Krypton NF";
-  font-size: 22pt;
+  font-size: 20pt;
 }
 
 /* ===== System Stats ===== */
@@ -168,6 +170,17 @@ box.horizontal {
 
 #network.disconnected {
   color: @overlay0;
+}
+
+/* ===== PulseAudio ===== */
+#pulseaudio {
+  color: @rosewater;
+  font-size: 15pt;
+}
+
+#pulseaudio.muted {
+  color: @red;
+  font-size: 18pt;
 }
 
 /* ===== Tray ===== */

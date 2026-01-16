@@ -7,3 +7,10 @@ OpenRGB/
 hypr/.current_wallpaper
 qtvirtualkeyboard/
 gtk-3.0/
+user-dirs.dirs
+user-dirs.locale
+gtk-3.0/
+pulse/
+systemd/
+pavucontrol.ini
+org.coolercontrol.CoolerControl/
