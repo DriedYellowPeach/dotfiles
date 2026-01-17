@@ -65,8 +65,8 @@ dynamic_padding = true
 opacity = 1
 
 [window.padding]
-x = 1
-y = 1
+x = 0
+y = 0
 
 [general]
 import = ["~/.config/alacritty/themes/themes/tokyo_night_storm.toml"]
