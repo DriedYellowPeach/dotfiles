@@ -395,11 +395,10 @@ Reference: https://github.com/uiriansan/SilentSDDM/wiki/Customizing
 - [x] hyprlock can have user icon, do it
 - [x] know more about workspace
 - [x] File browser
+- [x] window style: active window border, normal window border
 
-- window style: active window border, normal window border
-- how to hide all windows
 - to take screenshot
+- how to set hypridle
 - waybar detailed info better
 - for the logo, show some neofetch like info?
-- how to hide all windows
 - rofi emoji menu
