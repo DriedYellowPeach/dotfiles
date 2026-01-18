@@ -72,13 +72,13 @@
     },
 
     "cpu": {
-        "format": "󰍛: {usage}% {avg_frequency}GHz {load}",
+        "format": "󰍛={usage}%|{avg_frequency:.2f}GHz|{load:.2f}",
         "interval": 1,
         "on-click-right": "gnome-system-monitor"
     },
 
     "custom/gpu": {
-        "exec": "~/.config/waybar/scripts/gpu.sh '󰾲: %usage%% %temp%°C %power%W'",
+        "exec": "~/.config/waybar/scripts/gpu.sh '󰾲=%usage%%|%temp%°C|%power%W'",
         "return-type": "json",
         "format": "{}",
         "interval": 2
@@ -86,13 +86,13 @@
 
     "memory": {
         "interval": 1,
-        "format": ":: {used:0.1f}/{total:0.1f}G",
+        "format": " ={used:0.1f}/{total:0.1f}GiB",
         "format-alt": "RAM: {used:0.1f}GB / {total:0.1f}GB ({percentage}%)"
     },
 
     "disk": {
         "interval": 30,
-        "format": "󰋊: {free}",
+        "format": "󰋊={free}",
         "path": "/",
         "tooltip": true,
         "tooltip-format": "Free: {free} / {total} ({percentage_free}%)"
@@ -100,12 +100,12 @@
 
     "network": {
         "interval": 2,
-        "format-wifi": "󰖩: 󰕒{bandwidthUpBytes:>3} 󰇚{bandwidthDownBytes:>3}",
-        "format-ethernet": " : 󰕒{bandwidthUpBytes:>3} 󰇚{bandwidthDownBytes:>3}",
+        "format-wifi": "󰖩=󰕒{bandwidthUpBytes:>3}|󰇚{bandwidthDownBytes:>3}",
+        "format-ethernet": " ={bandwidthDownBytes:>3}",
         "format-disconnected": "󰌙: Disconnected",
         "tooltip": true,
         "tooltip-format-wifi": "WiFi: {essid} ({signalStrength}%)\nIP: {ipaddr}",
-        "tooltip-format-ethernet": "Ethernet: {ifname}\nIP: {ipaddr}",
+        "tooltip-format-ethernet": "Ethernet: {ifname}\nIP: {ipaddr}\nUpload: {bandwidthUpBytes}\nDownload: {bandwidthDownBytes}",
         "tooltip-format-disconnected": "No connection"
     },
 
