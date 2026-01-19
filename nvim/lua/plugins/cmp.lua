@@ -34,5 +34,10 @@ return {
         scrollbar = true,
       },
     },
+    cmdline = {
+      keymap = {
+        preset = "inherit",
+      },
+    },
   },
 }
