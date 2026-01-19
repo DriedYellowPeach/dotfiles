@@ -1,0 +1,10 @@
+@import "shared"
+
+configuration {
+    show-icons: false;
+    location: 0;
+    disable-history: true;
+    hide-scrollbar: true;
+}
+
+@theme "themes/clipboard_theme"
