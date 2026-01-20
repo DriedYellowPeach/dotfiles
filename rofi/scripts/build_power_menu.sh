@@ -37,14 +37,21 @@ icons[reboot]=""
 icons[shutdown]="󰚦"
 icons[cancel]=""
 
+function close_all_windows() {
+	hyprctl clients -j | jq -r ".[].address" | while read -r addr; do
+		hyprctl dispatch closewindow address:"$addr" 2>/dev/null
+	done
+	sleep 1
+}
+
 declare -A actions
 actions[lockscreen]="hyprlock >/dev/null 2>&1"
 #actions[switchuser]="???"
-actions[logout]="hyprctl dispatch exit"
+actions[logout]="close_all_windows && hyprctl dispatch exit"
 actions[suspend]="systemctl suspend"
 actions[hibernate]="systemctl hibernate"
-actions[reboot]="systemctl reboot"
-actions[shutdown]="systemctl poweroff"
+actions[reboot]="close_all_windows && systemctl reboot"
+actions[shutdown]="close_all_windows && systemctl poweroff"
 
 # By default, ask for confirmation for actions that are irreversible
 confirmations=(reboot shutdown logout)
