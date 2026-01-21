@@ -396,9 +396,10 @@ Reference: https://github.com/uiriansan/SilentSDDM/wiki/Customizing
 - [x] know more about workspace
 - [x] File browser
 - [x] window style: active window border, normal window border
+- [x] to take screenshot
+- [x] how to set hypridle
 
-- to take screenshot
-- how to set hypridle
+- Find the keymap how to delete the whole line
 - waybar detailed info better
 - for the logo, show some neofetch like info?
 - rofi emoji menu
