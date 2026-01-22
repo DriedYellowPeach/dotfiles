@@ -9,6 +9,10 @@ vim.api.nvim_create_autocmd("FileType", {
 -- But it seems that the community is not dead entirely, so this is it for now.
 return {
   {
+    "nvim-treesitter/nvim-treesitter",
+    opts = { ensure_installed = { "wgsl" } },
+  },
+  {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
