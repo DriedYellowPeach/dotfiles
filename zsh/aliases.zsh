@@ -14,6 +14,7 @@ alias ls='eza --icons --group-directories-first --git'
 alias ll='ls -alF'
 alias lt='eza --tree --level=2 --icons' 
 alias cat='bat --paging=never'
+alias less='bat --paging=always'
 
 # Better cd command: zoxide
 alias cd='z'
