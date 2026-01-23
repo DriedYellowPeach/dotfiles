@@ -39,7 +39,7 @@ icons[cancel]=""
 
 function close_all_windows() {
 	hyprctl clients -j | jq -r ".[].address" | while read -r addr; do
-		hyprctl dispatch closewindow address:"$addr" 2>/dev/null
+		hyprctl dispatch closewindow address:"$addr" >/dev/null 2>&1
 	done
 	sleep 1
 }
@@ -47,7 +47,7 @@ function close_all_windows() {
 declare -A actions
 actions[lockscreen]="hyprlock >/dev/null 2>&1"
 #actions[switchuser]="???"
-actions[logout]="close_all_windows && hyprctl dispatch exit"
+actions[logout]="close_all_windows && hyprctl dispatch exit >/dev/null 2>&1"
 actions[suspend]="systemctl suspend"
 actions[hibernate]="systemctl hibernate"
 actions[reboot]="close_all_windows && systemctl reboot"
