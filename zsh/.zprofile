@@ -8,8 +8,18 @@ function setup_workspace() {
         tmux has-session -t "$s" 2>/dev/null || tmux new-session -d -s "$s"
     done
 
-    # 3. Attach to the first one (coding) and replace the current shell
-    exec tmux attach-session -t "coding"
+    # 3. Only attach if no client is currently attached to any session
+    local has_client=false
+    for s in "${sessions[@]}"; do
+      if tmux list-clients -t "$s" 2>/dev/null | grep -q .; then
+        has_client=true
+        break
+      fi
+    done
+
+    if [[ "$has_client" == false ]]; then
+      exec tmux attach-session -t "coding"
+    fi
   fi
 }
 
