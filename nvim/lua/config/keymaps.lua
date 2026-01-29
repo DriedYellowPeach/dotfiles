@@ -8,7 +8,6 @@ local toggle_term = function()
   -- local lv = require("lazyvim.util.terminal")
   -- lv.open(nil, { cwd = ".", border = "rounded" })
 end
-map({ "n", "t" }, "<C-\\>", toggle_term, { desc = "Terminal (cwd)" })
 map({ "n", "t" }, "<C-t>", toggle_term, { desc = "Terminal (cwd)" })
 
 -- NOTE: This is my old way to toggle Lazygit
