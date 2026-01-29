@@ -46,7 +46,7 @@ box.horizontal {
 #custom-logo,
 #workspaces,
 #clock,
-#cpu,
+#custom-cpu,
 #custom-gpu,
 #memory,
 #disk,
@@ -148,7 +148,7 @@ box.horizontal {
 }
 
 /* ===== System Stats ===== */
-#cpu {
+#custom-cpu {
   color: @lavender;
 }
 

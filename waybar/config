@@ -23,7 +23,7 @@
     ],
 
     "modules-right": [
-        "cpu",
+        "custom/cpu",
         "custom/gpu",
         "memory",
         "disk",
@@ -71,9 +71,11 @@
         "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>"
     },
 
-    "cpu": {
-        "format": "󰍛={usage}%|{avg_frequency:.2f}GHz|{load:.2f}",
-        "interval": 1,
+    "custom/cpu": {
+        "exec": "~/.config/waybar/scripts/cpu.sh '󰍛=%usage%%|%temp%°C|%freq%GHz'",
+        "return-type": "json",
+        "format": "{}",
+        "interval": 2,
         "on-click-right": "gnome-system-monitor"
     },
 
