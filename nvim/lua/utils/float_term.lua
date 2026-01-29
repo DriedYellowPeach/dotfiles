@@ -45,6 +45,7 @@ function M.open(cmd_string, env_table, _)
   -- Create buffer if needed
   if not state.buf or not vim.api.nvim_buf_is_valid(state.buf) then
     state.buf = vim.api.nvim_create_buf(false, true)
+    vim.b[state.buf].miniindentscope_disable = true
   end
 
   -- Create floating window
