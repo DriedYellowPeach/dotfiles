@@ -151,9 +151,8 @@ local function setup_dashboard()
 
   for _, button in ipairs(opts.config.center) do
     button.desc = button.desc .. string.rep(" ", 43 - #button.desc)
-    -- NOTE:: use this pair to embed key, a
-    -- looks really cool!
-    button.key_format = "\u{e0d2}%s\u{e0d4}"
+    -- NOTE:: use this pair to embed key, a
+    button.key_format = "%s"
   end
 
   if vim.o.filetype == "lazy" then
