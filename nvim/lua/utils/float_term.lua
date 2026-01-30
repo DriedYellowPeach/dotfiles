@@ -59,6 +59,23 @@ function M.open(cmd_string, env_table, _)
       opts.env = env_table
     end
     state.chan = vim.fn.termopen(cmd, opts)
+
+    -- Double-escape to enter normal mode
+    local esc_timer = nil
+    vim.keymap.set("t", "<Esc>", function()
+      if esc_timer then
+        esc_timer:stop()
+        esc_timer = nil
+        vim.cmd("stopinsert")
+      else
+        esc_timer = vim.defer_fn(function()
+          if esc_timer then
+            esc_timer = nil
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+          end
+        end, 200)
+      end
+    end, { buffer = state.buf })
   end
 
   vim.cmd("startinsert")
