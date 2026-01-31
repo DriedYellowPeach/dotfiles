@@ -60,6 +60,10 @@ function M.open(cmd_string, env_table, _)
     end
     state.chan = vim.fn.termopen(cmd, opts)
 
+    -- Limit scrollback to prevent memory issues with large output
+    -- Lower value = less freeze risk with high-output programs like Claude Code
+    vim.bo[state.buf].scrollback = 1000
+
     -- Double-escape to enter normal mode
     local esc_timer = nil
     vim.keymap.set("t", "<Esc>", function()
@@ -85,6 +89,21 @@ function M.close(_cmd_string, _env_table, _effective_config)
   if state.win and vim.api.nvim_win_is_valid(state.win) then
     vim.api.nvim_win_close(state.win, true)
     state.win = nil
+  end
+end
+
+function M.kill()
+  if state.win and vim.api.nvim_win_is_valid(state.win) then
+    vim.api.nvim_win_close(state.win, true)
+    state.win = nil
+  end
+  if state.chan then
+    vim.fn.jobstop(state.chan)
+    state.chan = nil
+  end
+  if state.buf and vim.api.nvim_buf_is_valid(state.buf) then
+    vim.api.nvim_buf_delete(state.buf, { force = true })
+    state.buf = nil
   end
 end
 
