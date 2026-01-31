@@ -35,9 +35,6 @@ local gradient_color = {
 }
 
 return {
-  { "rose-pine/neovim", name = "rose-pine", opts = {
-    variant = "dawn",
-  } },
   {
     "folke/tokyonight.nvim",
     opts = {
