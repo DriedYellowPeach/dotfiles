@@ -2,7 +2,7 @@ function setup_workspace() {
   # 1. Only proceed if we aren't already inside a tmux session
   if [[ -z "$TMUX" ]]; then
     local sessions=("coding" "foraging" "hacking")
-        
+
     # 2. Silently create each session if it doesn't already exist
     for s in "${sessions[@]}"; do
         tmux has-session -t "$s" 2>/dev/null || tmux new-session -d -s "$s"
