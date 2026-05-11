@@ -142,7 +142,7 @@ local function setup_dashboard()
         local art_text = require("utils.artwork").ascii_art()
         local stats = require("lazy").stats()
         local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-        local lazy_info = "⚡ Neovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms"
+        local lazy_info = "⚡ Neilvim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms"
         art_text[#art_text + 1] = lazy_info
         return art_text
       end,

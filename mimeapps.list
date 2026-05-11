@@ -1,9 +1,15 @@
-
 [Default Applications]
 image/png=firefox.desktop
+image/jpeg=firefox.desktop
 text/html=firefox.desktop
 x-scheme-handler/http=firefox.desktop
 x-scheme-handler/https=firefox.desktop
 x-scheme-handler/about=firefox.desktop
 x-scheme-handler/unknown=firefox.desktop
+application/pdf=firefox.desktop
 x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+video/x-matroska=vlc.desktop
+x-scheme-handler/discord-1484148764850786414=discord-1484148764850786414.desktop
+
+[Added Associations]
+video/x-matroska=vlc.desktop;
