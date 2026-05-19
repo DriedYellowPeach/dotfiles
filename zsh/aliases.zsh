@@ -5,6 +5,7 @@ alias vi='nvim'
 # pacman alias
 alias pacup='sudo pacman -Syu'
 alias pacin='sudo pacman -S'
+alias pacadd='sudo pacman -S'
 alias pacrm='sudo pacman -Rns'
 alias pacfind='pacman -Ss'
 alias pacorphans='pacman -Qdtq'

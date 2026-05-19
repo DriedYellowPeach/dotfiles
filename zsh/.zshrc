@@ -111,5 +111,5 @@ source $ZSH_CONF/func.zsh
 source $ZSH_CONF/aliases.zsh
 
 
-eval "$(zoxide init zsh)"
 eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
