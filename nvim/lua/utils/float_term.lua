@@ -54,38 +54,39 @@ function M.open(cmd_string, env_table, _)
   -- Start terminal if buffer doesn't have one
   if vim.bo[state.buf].buftype ~= "terminal" then
     local cmd = cmd_string or vim.o.shell
-    local opts = {}
+
+    -- When nvim itself runs inside tmux, Claude Code sees $TMUX and assumes it
+    -- is directly under tmux, so it wraps its OSC 11 background-color query in a
+    -- tmux passthrough sequence (\ePtmux;...). But Claude actually runs inside
+    -- this nvim :terminal, so the passthrough hits nvim's libvterm instead of
+    -- tmux, which mis-parses it and prints a stray "11;?" on first launch. Strip
+    -- the tmux env vars so Claude emits a plain OSC 11 query that nvim handles.
+    if cmd_string and vim.env.TMUX then
+      cmd = "env -u TMUX -u TMUX_PANE " .. cmd_string
+    end
+
+    local opts = { term = true }
     if env_table then
       opts.env = env_table
     end
-    state.chan = vim.fn.termopen(cmd, opts)
+    state.chan = vim.fn.jobstart(cmd, opts)
 
     -- Limit scrollback to prevent memory issues with large output
     -- Lower value = less freeze risk with high-output programs like Claude Code
     vim.bo[state.buf].scrollback = 1000
 
-    -- Double-escape to enter normal mode
-    local esc_timer = nil
-    vim.keymap.set("t", "<Esc>", function()
-      if esc_timer then
-        esc_timer:stop()
-        esc_timer = nil
-        vim.cmd("stopinsert")
-      else
-        esc_timer = vim.defer_fn(function()
-          if esc_timer then
-            esc_timer = nil
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
-          end
-        end, 200)
-      end
+    -- Double-escape to enter normal mode; a single <Esc> passes straight through
+    -- to the program. Using the <Esc><Esc> chord avoids the 200ms latency the
+    -- old timer-based approach added to every lone <Esc>.
+    vim.keymap.set("t", "<Esc><Esc>", function()
+      vim.cmd("stopinsert")
     end, { buffer = state.buf })
   end
 
   vim.cmd("startinsert")
 end
 
-function M.close(_cmd_string, _env_table, _effective_config)
+function M.close(_, _, _)
   if state.win and vim.api.nvim_win_is_valid(state.win) then
     vim.api.nvim_win_close(state.win, true)
     state.win = nil

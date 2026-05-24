@@ -54,12 +54,23 @@ return {
     "nvimtools/none-ls.nvim",
     optional = true,
     opts = function(_, opts)
-      local nls = require("null-ls")
-      opts.sources = vim.list_extend(opts.sources or {}, {
-        nls.builtins.diagnostics.markdownlint_cli2.with({
-          extra_args = { "--config", "/Users/neil/source/dot-files/vim-ide-config/.markdownlint-cli2.yaml" },
-        }),
-      })
+      -- Let nvim-lint be the sole markdownlint source (LazyVim's markdown extra
+      -- registers markdownlint-cli2 in BOTH none-ls and nvim-lint -> duplicates).
+      -- Drop the none-ls one; nvim-lint handles it via the spec below.
+      opts.sources = vim.tbl_filter(function(s)
+        return s.name ~= "markdownlint-cli2"
+      end, opts.sources or {})
     end,
+  },
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      linters = {
+        ["markdownlint-cli2"] = {
+          prepend_args = { "--config", vim.fn.stdpath("config") .. "/.markdownlint.jsonc" },
+        },
+      },
+    },
   },
 }

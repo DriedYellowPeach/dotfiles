@@ -1,0 +1,6 @@
+{
+  // Global markdownlint rules (applied to all markdown via nvim --config)
+  "MD004": false, // unordered list style
+  "MD013": false, // line length
+  "MD036": false  // emphasis used instead of a heading
+}
