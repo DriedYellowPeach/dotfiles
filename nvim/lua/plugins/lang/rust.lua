@@ -28,7 +28,10 @@ return {
   },
   {
     "mrcjkb/rustaceanvim",
-    version = "^5", -- Recommende"
+    version = "^5",
+    -- nvim-dap must load before rust-analyzer attaches, else rustaceanvim won't
+    -- advertise `debugSingle` and the Debug code lens is hidden.
+    dependencies = { "mfussenegger/nvim-dap" },
     opts = {
       tools = {
         -- executor = executors.termopen,
@@ -44,12 +47,10 @@ return {
           vim.keymap.set("n", "<leader>ce", function()
             vim.cmd.RustLsp("expandMacro")
           end, { desc = "Expand Macro", buffer = bufnr })
-          -- FIX: Debug current line, this is all I can do now
-          -- Really can not figure out why the debug codelens disappears
-          -- And I am gonna now sleep well over this!
+          -- NOTE: debug current line
           vim.keymap.set("n", "<leader>dd", function()
             vim.cmd.RustLsp("debug")
-          end, { desc = "Rust Deug line", buffer = bufnr })
+          end, { desc = "Rust Debug line", buffer = bufnr })
           -- NOTE: key map for all debuggables
           vim.keymap.set("n", "<leader>dr", function()
             vim.cmd.RustLsp("debuggables")
@@ -61,15 +62,9 @@ return {
             "force",
             -- NOTE: Default settings
             {
-              lens = {
-                enable = true,
-                run = {
-                  enable = true,
-                },
-                debug = {
-                  enable = true,
-                },
-              },
+              -- lens.run/debug/implementations/updateTest are on by default.
+              -- To show reference counts (off by default), enable references, e.g.:
+              --   lens = { references = { adt = { enable = true }, method = { enable = true } } }
               cargo = {
                 allFeatures = true,
                 loadOutDirsFromCheck = true,
@@ -84,11 +79,10 @@ return {
               },
               procMacro = {
                 enable = true,
-                ignored = {
-                  -- ["async-trait"] = { "async_trait" },
-                  -- ["napi-derive"] = { "napi" },
-                  -- ["async-recursion"] = { "async_recursion" },
-                },
+                -- NOTE: don't set `ignored = {}` here. An empty Lua table
+                -- serializes to JSON `[]`, but rust-analyzer expects a map for
+                -- procMacro.ignored and rejects it ("expected a map"). If you
+                -- need entries, add them as `["crate"] = { "macro" }`.
               },
               diagnostics = {
                 enable = true,
@@ -102,14 +96,7 @@ return {
         },
       },
     },
-    config = function(_, opts)
-      vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
-      if vim.fn.executable("rust-analyzer") == 0 then
-        LazyVim.error(
-          "**rust-analyzer** not found in PATH, please install it.\nhttps://rust-analyzer.github.io/",
-          { title = "rustaceanvim" }
-        )
-      end
-    end,
+    -- NOTE: no custom `config` here. LazyVim's rust extra `config` wires up the
+    -- codelldb DAP adapter (`opts.dap`); overriding it drops the adapter.
   },
 }
