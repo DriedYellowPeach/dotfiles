@@ -9,7 +9,7 @@ local mod = v.mainMod
 hl.bind(mod .. " + E", hl.dsp.exec_cmd(v.fileManager))
 hl.bind(mod .. " + T", hl.dsp.exec_cmd(v.terminal))
 hl.bind(mod .. " + M", hl.dsp.exec_cmd(v.music_player))
-hl.bind(mod .. " + L", hl.dsp.exec_cmd("hyprlock"))
+hl.bind(mod .. " + CONTROL + L", hl.dsp.exec_cmd("hyprlock"))
 
 -- Window management
 -- NOTE: 0.55 has a known quirk where fullscreen(mode=0) doesn't toggle back;
@@ -19,7 +19,7 @@ hl.bind(mod .. " + Q", hl.dsp.window.close())
 hl.bind(mod .. " + V", hl.dsp.window.float({ action = "toggle" }))
 
 -- Layout
-hl.bind(mod .. " + J", hl.dsp.layout("togglesplit"))
+hl.bind("ALT + space", hl.dsp.layout("togglesplit"))
 
 -- Screenshots (hyprshot)
 hl.bind("Print", hl.dsp.exec_cmd("hyprshot -m output --clipboard-only"))
@@ -30,6 +30,10 @@ hl.bind(mod .. " + left", hl.dsp.focus({ direction = "left" }))
 hl.bind(mod .. " + right", hl.dsp.focus({ direction = "right" }))
 hl.bind(mod .. " + up", hl.dsp.focus({ direction = "up" }))
 hl.bind(mod .. " + down", hl.dsp.focus({ direction = "down" }))
+hl.bind(mod .. " + H", hl.dsp.focus({ direction = "left" }))
+hl.bind(mod .. " + J", hl.dsp.focus({ direction = "down" }))
+hl.bind(mod .. " + K", hl.dsp.focus({ direction = "up" }))
+hl.bind(mod .. " + L", hl.dsp.focus({ direction = "right" }))
 
 -- Workspaces 1-10 (key 0 -> ws 10)
 for i = 1, 10 do
