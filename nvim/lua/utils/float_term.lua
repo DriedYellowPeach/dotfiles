@@ -19,6 +19,19 @@ local function create_float_opts()
   }
 end
 
+-- Move the cursor to the last line, then enter Terminal-mode. Neovim only keeps
+-- a terminal window pinned to live output while the cursor sits on the last
+-- line. When we reopen/refocus the float while Claude is streaming, the window
+-- restores the cursor to its previously saved line; left there, new output
+-- scrolls past below it while the cursor stays put, away from Claude's input
+-- box. Snapping to the bottom first re-engages the scroll-follow.
+local function enter_insert()
+  if state.win and vim.api.nvim_win_is_valid(state.win) and state.buf and vim.api.nvim_buf_is_valid(state.buf) then
+    pcall(vim.api.nvim_win_set_cursor, state.win, { vim.api.nvim_buf_line_count(state.buf), 0 })
+  end
+  vim.cmd("startinsert")
+end
+
 function M.setup(_)
   -- No setup needed
 end
@@ -38,7 +51,7 @@ function M.open(cmd_string, env_table, _)
   -- If window exists and is valid, focus it
   if state.win and vim.api.nvim_win_is_valid(state.win) then
     vim.api.nvim_set_current_win(state.win)
-    vim.cmd("startinsert")
+    enter_insert()
     return
   end
 
@@ -83,7 +96,7 @@ function M.open(cmd_string, env_table, _)
     end, { buffer = state.buf })
   end
 
-  vim.cmd("startinsert")
+  enter_insert()
 end
 
 function M.close(_, _, _)
@@ -122,7 +135,7 @@ function M.focus_toggle(cmd_string, env_table, effective_config)
       M.close(cmd_string, env_table, effective_config)
     else
       vim.api.nvim_set_current_win(state.win)
-      vim.cmd("startinsert")
+      enter_insert()
     end
   else
     M.open(cmd_string, env_table, effective_config)
