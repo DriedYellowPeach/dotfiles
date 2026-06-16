@@ -8,6 +8,7 @@ return {
     },
     opts = {
       terminal = {
+        -- Custom floating-window terminal provider. See utils/float_term.lua.
         provider = require("utils.float_term"),
       },
       diff_provider = "native",

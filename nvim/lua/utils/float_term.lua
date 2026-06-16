@@ -1,40 +1,26 @@
 local M = {}
 
-local state = { buf = nil, win = nil, chan = nil }
+local state = { buf = nil, win = nil, chan = nil, redraw_timer = nil }
 
 local function create_float_opts()
-  local width = math.floor(vim.o.columns * 0.7)
+  local width = math.floor(vim.o.columns * 0.9)
   local height = math.floor(vim.o.lines * 0.9)
-  local col = math.floor((vim.o.columns - width) / 2)
-  local row = math.floor((vim.o.lines - height) / 2)
-
   return {
     relative = "editor",
     width = width,
     height = height,
-    col = col,
-    row = row,
+    col = math.floor((vim.o.columns - width) / 2),
+    row = math.floor((vim.o.lines - height) / 2),
     style = "minimal",
     border = "rounded",
   }
 end
 
--- Move the cursor to the last line, then enter Terminal-mode. Neovim only keeps
--- a terminal window pinned to live output while the cursor sits on the last
--- line. When we reopen/refocus the float while Claude is streaming, the window
--- restores the cursor to its previously saved line; left there, new output
--- scrolls past below it while the cursor stays put, away from Claude's input
--- box. Snapping to the bottom first re-engages the scroll-follow.
-local function enter_insert()
-  if state.win and vim.api.nvim_win_is_valid(state.win) and state.buf and vim.api.nvim_buf_is_valid(state.buf) then
-    pcall(vim.api.nvim_win_set_cursor, state.win, { vim.api.nvim_buf_line_count(state.buf), 0 })
-  end
-  vim.cmd("startinsert")
+local function win_valid()
+  return state.win ~= nil and vim.api.nvim_win_is_valid(state.win)
 end
 
-function M.setup(_)
-  -- No setup needed
-end
+function M.setup(_) end
 
 function M.is_available()
   return true
@@ -48,32 +34,31 @@ function M.get_active_bufnr()
 end
 
 function M.open(cmd_string, env_table, _)
-  -- If window exists and is valid, focus it
-  if state.win and vim.api.nvim_win_is_valid(state.win) then
+  -- Already open: just focus it.
+  if win_valid() then
     vim.api.nvim_set_current_win(state.win)
-    enter_insert()
+    vim.cmd("startinsert")
     return
   end
 
-  -- Create buffer if needed
   if not state.buf or not vim.api.nvim_buf_is_valid(state.buf) then
     state.buf = vim.api.nvim_create_buf(false, true)
+    -- Don't render indent guides inside the terminal.
     vim.b[state.buf].miniindentscope_disable = true
   end
 
-  -- Create floating window
   state.win = vim.api.nvim_open_win(state.buf, true, create_float_opts())
 
-  -- Start terminal if buffer doesn't have one
+  -- Start the terminal only if this buffer isn't already one (reopening
+  -- around a still-running terminal just reattaches the window).
   if vim.bo[state.buf].buftype ~= "terminal" then
     local cmd = cmd_string or vim.o.shell
 
-    -- When nvim itself runs inside tmux, Claude Code sees $TMUX and assumes it
-    -- is directly under tmux, so it wraps its OSC 11 background-color query in a
-    -- tmux passthrough sequence (\ePtmux;...). But Claude actually runs inside
-    -- this nvim :terminal, so the passthrough hits nvim's libvterm instead of
-    -- tmux, which mis-parses it and prints a stray "11;?" on first launch. Strip
-    -- the tmux env vars so Claude emits a plain OSC 11 query that nvim handles.
+    -- When nvim runs inside tmux, Claude sees $TMUX and wraps its OSC 11
+    -- background-color query in a tmux passthrough sequence. But Claude runs
+    -- in this nvim :terminal, not directly under tmux, so the passthrough hits
+    -- nvim's libvterm and prints a stray "11;?" on first launch. Strip the tmux
+    -- env vars so Claude emits a plain OSC 11 query that nvim handles.
     if cmd_string and vim.env.TMUX then
       cmd = "env -u TMUX -u TMUX_PANE " .. cmd_string
     end
@@ -84,30 +69,56 @@ function M.open(cmd_string, env_table, _)
     end
     state.chan = vim.fn.jobstart(cmd, opts)
 
-    -- Limit scrollback to prevent memory issues with large output
-    -- Lower value = less freeze risk with high-output programs like Claude Code
-    vim.bo[state.buf].scrollback = 1000
-
-    -- Double-escape to enter normal mode; a single <Esc> passes straight through
-    -- to the program. Using the <Esc><Esc> chord avoids the 200ms latency the
-    -- old timer-based approach added to every lone <Esc>.
+    -- Double-<Esc> to leave Terminal mode; a single <Esc> passes straight
+    -- through to the program (Claude uses it).
     vim.keymap.set("t", "<Esc><Esc>", function()
       vim.cmd("stopinsert")
     end, { buffer = state.buf })
+
+    -- Under a heavy output burst nvim's terminal display lags and the cursor
+    -- can sit a row out of place; any redraw (e.g. an outer window resize)
+    -- fixes it. Debounce a redraw shortly after output settles so the trailing
+    -- frame snaps back, without flicker mid-stream.
+    state.redraw_timer = vim.uv.new_timer()
+    vim.api.nvim_buf_attach(state.buf, false, {
+      on_lines = function()
+        if not (state.buf and vim.api.nvim_buf_is_valid(state.buf)) then
+          return true -- detach
+        end
+        if not state.redraw_timer then
+          return
+        end
+        state.redraw_timer:stop()
+        state.redraw_timer:start(
+          80,
+          0,
+          vim.schedule_wrap(function()
+            if win_valid() then
+              vim.cmd("redraw")
+            end
+          end)
+        )
+      end,
+    })
   end
 
-  enter_insert()
+  vim.cmd("startinsert")
 end
 
 function M.close(_, _, _)
-  if state.win and vim.api.nvim_win_is_valid(state.win) then
+  if win_valid() then
     vim.api.nvim_win_close(state.win, true)
     state.win = nil
   end
 end
 
 function M.kill()
-  if state.win and vim.api.nvim_win_is_valid(state.win) then
+  if state.redraw_timer then
+    state.redraw_timer:stop()
+    state.redraw_timer:close()
+    state.redraw_timer = nil
+  end
+  if win_valid() then
     vim.api.nvim_win_close(state.win, true)
     state.win = nil
   end
@@ -122,7 +133,7 @@ function M.kill()
 end
 
 function M.simple_toggle(cmd_string, env_table, effective_config)
-  if state.win and vim.api.nvim_win_is_valid(state.win) then
+  if win_valid() then
     M.close(cmd_string, env_table, effective_config)
   else
     M.open(cmd_string, env_table, effective_config)
@@ -130,13 +141,8 @@ function M.simple_toggle(cmd_string, env_table, effective_config)
 end
 
 function M.focus_toggle(cmd_string, env_table, effective_config)
-  if state.win and vim.api.nvim_win_is_valid(state.win) then
-    if vim.api.nvim_get_current_win() == state.win then
-      M.close(cmd_string, env_table, effective_config)
-    else
-      vim.api.nvim_set_current_win(state.win)
-      enter_insert()
-    end
+  if win_valid() and vim.api.nvim_get_current_win() == state.win then
+    M.close(cmd_string, env_table, effective_config)
   else
     M.open(cmd_string, env_table, effective_config)
   end
