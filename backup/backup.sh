@@ -14,7 +14,7 @@ config="${BACKUP_CONFIG:-$script_dir/backup.conf}"
 #   --no-perms/owner/group  SMB shares can't store Unix ownership/permissions
 # Add --delete below if you want destinations to mirror sources exactly
 # (i.e. files removed locally also get removed from the backup).
-rsync_opts=(-rt --modify-window=1 --no-perms --no-owner --no-group)
+rsync_opts=(-rt --modify-window=1 --no-perms --no-owner --no-group --info=progress2)
 
 trim() { sed -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' <<<"$1"; }
 
