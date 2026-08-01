@@ -32,6 +32,27 @@ return {
     -- nvim-dap must load before rust-analyzer attaches, else rustaceanvim won't
     -- advertise `debugSingle` and the Debug code lens is hidden.
     dependencies = { "mfussenegger/nvim-dap" },
+    -- NOTE: this MUST go through `vim.g.rustaceanvim` in `init`, not through
+    -- `opts.dap`. LazyVim's rust extra assigns `opts.dap = { adapter = ... }`
+    -- wholesale (extras/lang/rust.lua:114), which discards anything we put in
+    -- `opts.dap`. It then merges with `tbl_deep_extend("keep", vim.g.rustaceanvim, opts)`
+    -- (line 118), so a value already present in `vim.g.rustaceanvim` wins, and
+    -- `init` runs before `config`. This keeps LazyVim's codelldb adapter.
+    --
+    -- Why disable it: on rust-analyzer init, rustaceanvim requests every
+    -- runnable in the workspace and *executes* each one's cargo command just to
+    -- learn the output binary path, to prepopulate `require('dap').continue()`.
+    -- In bevy that includes the crate-level test suite runnable, i.e.
+    -- `cargo test --no-run --package bevy --all-targets`, which links all ~357
+    -- examples at ~1.5 GB each (533 GB). `:RustLsp debuggables` and
+    -- `<leader>dd` / `<leader>dr` still build only the target you pick.
+    init = function()
+      vim.g.rustaceanvim = vim.tbl_deep_extend("force", vim.g.rustaceanvim or {}, {
+        dap = {
+          autoload_configurations = false,
+        },
+      })
+    end,
     opts = {
       tools = {
         -- executor = executors.termopen,
