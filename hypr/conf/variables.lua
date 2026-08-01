@@ -2,7 +2,7 @@
 local home = os.getenv("HOME")
 return {
 	mainMod = "SUPER",
-	terminal = "alacritty",
+	terminal = "kitty",
 	fileManager = "nautilus",
 	status_bar = "waybar",
 	music_player = "strawberry",
