@@ -1,5 +1,6 @@
 {
     "layer": "top",
+    "output": "DP-3",
     "position": "top",
     "exclusive": true,
     "passthrough": false,
