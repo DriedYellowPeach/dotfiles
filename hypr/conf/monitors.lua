@@ -13,21 +13,49 @@
 --                                   +--------+
 --
 -- ASUS PG32UCDM: 4k 240hz
--- For HDR: cm = "hdr", bitdepth = 10, plus sdr/max luminance tuning.
+--
+-- HDR is toggled at runtime by scripts/hdr-toggle.sh (`hdr_toggle` on PATH),
+-- which writes on/off to the state file below and reloads. Both branches
+-- spell out the full key set on purpose: Hyprland never resets a monitor key
+-- you leave out, so an omitted cm/bitdepth keeps its last applied value for
+-- the rest of the session.
+local hdr_state = (os.getenv("XDG_STATE_HOME") or (os.getenv("HOME") .. "/.local/state"))
+	.. "/hypr/hdr"
+local hdr_on = false
+local f = io.open(hdr_state, "r")
+if f then
+	hdr_on = ((f:read("*l") or ""):match("^%s*(%S*)") == "on")
+	f:close()
+end
 
-hl.monitor({
+local dp3 = {
 	output = "DP-3",
 	mode = "3840x2160@240",
 	position = "0x0",
 	scale = 1.33,
-	-- vrr = 1,
-	-- cm = "hdr",
-	-- bitdepth = 10,
-	-- sdrbrightness    = 0.9,
-	-- sdrsaturation    = 1.7,
-	-- sdr_max_luminance = 300,
-	-- max_luminance     = 600,
-})
+}
+
+local color = hdr_on
+		and {
+			cm = "hdr",
+			bitdepth = 10,
+			sdrbrightness = 0.9,
+			sdrsaturation = 1.7,
+			sdr_max_luminance = 300,
+			max_luminance = 600,
+		}
+	or {
+		cm = "auto",
+		bitdepth = 8,
+		sdrbrightness = 1.0,
+		sdrsaturation = 1.0,
+	}
+
+for k, val in pairs(color) do
+	dp3[k] = val
+end
+
+hl.monitor(dp3)
 
 -- Samsung S34CG50 ultrawide, physically mounted in portrait.
 -- transform = 3 -> rotated 90 deg counter-clockwise (original right edge is up).
